@@ -5,6 +5,15 @@ name = "pypi"
 
 [packages]
 uvicorn = "*"
+fastapi = "*"
+ariadne = "*"
+dill = "==0.2.4"
+icecream = "*"
+werkzeug = "*"
+pytest = "*"
+snapshottest = "*"
+requests = "*"
+opentracing = "*"
 
 [dev-packages]
 
