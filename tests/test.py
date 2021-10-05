@@ -1,6 +1,4 @@
 from ariadne.asgi import GQL_START, GQL_CONNECTION_INIT
-from icecream import ic
-
 from Functions.printJson import printJ
 
 

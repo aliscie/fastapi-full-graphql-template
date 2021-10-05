@@ -10,3 +10,9 @@ test:
 
 run:
 	uvicorn main:app --reload
+
+init_db:
+	alembic init alembic
+
+migrate:
+	docker-compose run app alembic revision --autogenerate -m "New Migration"
