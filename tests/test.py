@@ -1,4 +1,5 @@
-from ariadne.asgi import GQL_START, GQL_CONNECTION_INIT
+from ariadne.asgi import GQL_START
+
 from Functions.printJson import printJ
 
 

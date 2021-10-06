@@ -1,35 +1,54 @@
 import asyncio
-import uvicorn
-from fastapi import FastAPI
-from ariadne import make_executable_schema, SubscriptionType, QueryType, ObjectType
+
+from ariadne import make_executable_schema, SubscriptionType, ObjectType, load_schema_from_path
 from ariadne.asgi import GraphQL
-from icecream import ic
+from fastapi import FastAPI
 
 app = FastAPI()
+query_type_def = '''
+type Query {
+    """
+    ### A brief summary of the search result.
+    - value two
+    ```
+    code test here.
+    ```
+    """
+_unused: Boolean 
+hello: String!
+}
 
-# ariadne copied from https://ariadnegraphql.org/docs/subscriptions
+type Post{
+title: String!
+id: ID!
+content: String!
+time_created: String!
+}
 
-type_def = """
-    type Query {
-        _unused: Boolean
-        hello: String!
-    }
+'''
+subscription_type_def = '''
 
-    type Subscription {
-        counter: Int!
-    }
-"""
+type Subscription {
+counter: Int!
+}
+'''
+
+type_defs = '''    
+schema {
+query: Query
+subscription: Subscription
+}
+''' + query_type_def + subscription_type_def
+
 
 subscription = SubscriptionType()
-# query = QueryType()
 
+# query = QueryType()
 query = ObjectType("Query")
 
 
 @query.field("hello")
-def resolve_hello( *args, **kwargs):
-    ic(args, kwargs)
-    ic('yyyyyyyyyyyyyyyyyyyyyy')
+def resolve_hello(*args, **kwargs):
     return 'xxxxxxx'
 
 
@@ -45,9 +64,5 @@ def counter_resolver(count, info):
     return count + 1
 
 
-schema1 = make_executable_schema(type_def, subscription)
-schema = make_executable_schema(type_def, query)
-app.mount("/", GraphQL(schema1, debug=True))
-# app.mount("/", GraphQL(schema, debug=True))
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
+schema = make_executable_schema(type_defs, [subscription, query])
+app.mount("/", GraphQL(schema, debug=True))

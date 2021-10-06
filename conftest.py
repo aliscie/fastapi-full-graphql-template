@@ -1,21 +1,17 @@
 import pytest
-from ariadne import make_executable_schema
 from ariadne.asgi import GraphQL
 from graphql import graphql_sync
-from icecream import ic
 from starlette.testclient import TestClient
-
-from main import query, type_def, schema1
+from main import schema
 
 
 @pytest.fixture
 def client():
-    app = GraphQL(schema1)
+    app = GraphQL(schema)
     return TestClient(app)
 
 
 def parsequery(x):
-    schema = make_executable_schema(type_def, query)
     return graphql_sync(schema, x)
 
 
