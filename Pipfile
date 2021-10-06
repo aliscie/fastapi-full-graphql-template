@@ -33,6 +33,12 @@ cffi = "*"
 click = "*"
 colorama = "*"
 cryptography = "*"
+h11 = "*"
+mako = "*"
+markupsafe = "*"
+mypy-extensions = "*"
+pathspec = "*"
+promise = "*"
 
 [dev-packages]
 

@@ -2,6 +2,7 @@ import pytest
 from ariadne.asgi import GraphQL
 from graphql import graphql_sync
 from starlette.testclient import TestClient
+
 from main import schema
 
 

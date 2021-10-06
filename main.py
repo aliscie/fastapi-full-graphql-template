@@ -1,10 +1,15 @@
 import asyncio
 
-from ariadne import make_executable_schema, SubscriptionType, ObjectType, load_schema_from_path
+from ariadne import make_executable_schema, SubscriptionType, ObjectType, load_schema_from_path, ScalarType
 from ariadne.asgi import GraphQL
 from fastapi import FastAPI
 
+from MyApp.main import query, subscription
+from OtherApp.main import sub2
+
 app = FastAPI()
+
+
 query_type_def = '''
 type Query {
     """
@@ -30,9 +35,9 @@ subscription_type_def = '''
 
 type Subscription {
 counter: Int!
+counter2: String!
 }
 '''
-
 type_defs = '''    
 schema {
 query: Query
@@ -40,29 +45,7 @@ subscription: Subscription
 }
 ''' + query_type_def + subscription_type_def
 
-
-subscription = SubscriptionType()
-
-# query = QueryType()
-query = ObjectType("Query")
-
-
-@query.field("hello")
-def resolve_hello(*args, **kwargs):
-    return 'xxxxxxx'
-
-
-@subscription.source("counter")
-async def counter_generator(obj, info):
-    for i in range(5):
-        await asyncio.sleep(1)
-        yield i
-
-
-@subscription.field("counter")
-def counter_resolver(count, info):
-    return count + 1
-
-
-schema = make_executable_schema(type_defs, [subscription, query])
-app.mount("/", GraphQL(schema, debug=True))
+types = [subscription, query, sub2]
+schema = make_executable_schema(type_defs, *types)
+ariadneApp = GraphQL(schema, debug=True)
+app.mount("/", ariadneApp)
