@@ -18,7 +18,6 @@ uvicorn = {extras = ["standard"], version = "*"}
 #plugs-ariadne-jwt = "*"
 #ariadne-extensions = "*"
 fastapi = "*"
-ariadne = "*"
 dill = "==0.2.4"
 pytest = "*"
 icecream = "*"
@@ -52,8 +51,16 @@ sqlalchemy = "*"
 starlette = "*"
 toml = "*"
 typing-extensions = "*"
+psycopg2 = "*"
+black = "==21.6b0"
+sqlparse = "==0.4.1"
+ariadne = "*"
+graphene-sqlalchemy = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.9"
+
+[pipenv]
+allow_prereleases = true

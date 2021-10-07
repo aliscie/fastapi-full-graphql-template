@@ -13,4 +13,4 @@ async def counter_generator(obj, info):
 
 @sub2.field("counter2")
 def counter_resolver(count, info):
-    return f'{count + 1} value test'
+    return f'{count } value test'

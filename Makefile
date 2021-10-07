@@ -1,7 +1,7 @@
 up:
-	docker-compose run app alembic revision --autogenerate -m "New Migration"
-	docker-compose run app alembic upgrade head
-	docker-compose build
+#	docker-compose run app alembic revision --autogenerate -m "New Migration"
+#	docker-compose run app alembic upgrade head
+	#docker-compose build
 	docker-compose up
 down:
 	docker-compose down
@@ -18,10 +18,7 @@ migrate:
 	docker-compose run app alembic revision --autogenerate -m "New Migration"
 
 restart:
-	#pipenv install 	black
 	#pipenv install 	graphene
-	#pipenv install 	graphene-sqlalchemy
 #	pipenv install 	graphql-core
 #	pipenv install 	graphql-relay
 #	pipenv install 	greenlet
-	#pipenv install 	psycopg2
