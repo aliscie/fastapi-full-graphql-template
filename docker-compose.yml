@@ -24,9 +24,11 @@ services:
     depends_on:
       - db
   app:
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://postgres:password@db:5432/post_db
     container_name: app
     build: .
-    command: bash -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+    command: bash -c "alembic upgrade head && uvicorn core.main:app --host 0.0.0.0 --port 8000 --reload"
     volumes:
       - .:/app
     ports:

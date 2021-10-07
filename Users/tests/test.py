@@ -3,4 +3,5 @@ from Functions.printJson import printJ
 
 def test_query(querying):
     result = querying("{ hello }")
-    printJ(result.data)
+    assert result.data['hello'] == 'xxxxxxx'
+    printJ(result.data['hello'])

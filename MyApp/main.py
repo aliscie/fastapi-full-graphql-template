@@ -2,6 +2,8 @@ import asyncio
 
 from ariadne import SubscriptionType, QueryType, ObjectType
 
+from core.TypeDef import AddTypeDef
+
 query = QueryType()
 query.bind_resolvers_to_graphql_type('hello', "String!")
 subscription = SubscriptionType()
@@ -21,16 +23,13 @@ subscription_type_def = '''
 
 extend type Subscription {
 """
-## def counter1 
+- This returns `1, 2, 3, 4,`
 """
 counter: Int!
-
-"""
-## def counter2
-"""
-counter2: String!
 }
 '''
+
+AddTypeDef([subscription_type_def,hello_type_def])
 
 @subscription.source("counter")
 async def counter_generator(obj, info):

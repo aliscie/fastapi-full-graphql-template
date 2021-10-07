@@ -1,15 +1,14 @@
 import pytest
-from ariadne.asgi import GraphQL
 from graphql import graphql_sync
-from starlette.testclient import TestClient
+# from starlette.testclient import TestClient
 
-from main import schema
+from core.main import schema
 
 
-@pytest.fixture
-def client():
-    app = GraphQL(schema)
-    return TestClient(app)
+# @pytest.fixture
+# def client():
+#     app = GraphQL(schema)
+#     return TestClient(app)
 
 
 def parsequery(x):

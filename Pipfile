@@ -56,6 +56,7 @@ black = "==21.6b0"
 sqlparse = "==0.4.1"
 ariadne = "*"
 graphene-sqlalchemy = "*"
+requests = "*"
 
 [dev-packages]
 

@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import jwt
 from dotenv import load_dotenv
 
-load_dotenv(".env")
+load_dotenv("../.env")
 
 secret_key = os.environ["SECRET_KEY"]
 
