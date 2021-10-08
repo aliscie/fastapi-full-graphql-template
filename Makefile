@@ -18,7 +18,7 @@ init_db:
 migrate:
 	docker-compose run app alembic revision --autogenerate -m "New Migration"
 
-restart:
+more_packages:
 	#pipenv install 	graphene
 #	pipenv install 	graphql-core
 #	pipenv install 	graphql-relay
