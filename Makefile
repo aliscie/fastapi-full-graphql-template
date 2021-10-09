@@ -9,7 +9,7 @@ test:
 	pytest test
 
 run:
-	uvicorn main:app --reload
+	uvicorn core.main:app --reload
 
 init_db:
 	alembic init alembic
