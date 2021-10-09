@@ -1,30 +1,68 @@
-import asyncio
+from collections import AsyncGenerator
 
-from ariadne import SubscriptionType
+from ariadne import SubscriptionType, MutationType
+from broadcaster import Broadcast
 
-from core.TypeDef import AddTypeDef
+from core import models
+# from core.main import app
+from db_conf import db_session
+
+db = db_session.session_factory()
 
 sub2 = SubscriptionType()
 
+send_mutation = MutationType()
+subscription = SubscriptionType()
 
-counter2_type_def = '''
+broadcast = Broadcast("redis://localhost:6379")
 
-extend type Subscription {
-"""
-- This returns 0 value test, 1 value test, 3 value test
-"""
-counter2: String!
-}
-'''
 
-AddTypeDef(counter2_type_def)
+#
+
+# @app.on_event("startup")
+# async def startup_event():
+#     x = broadcast.connect
+#
+#
+# @app.on_event("shutdown")
+# async def startup_event():
+#     x = broadcast.disconnect
+
+
+@send_mutation.field("send")
+def resolve_send(*args, **kwargs):
+    # broadcast.publish(channel="chatroom", message="Hello world!")
+
+    # for i in Post.query.all():
+    # sql1 = delete(Post).where(Post.id == i.id)
+    # db.execute(sql1)
+    # db.commit()
+
+    number = kwargs.get('number')
+    db_post = models.Post(title=number)
+    db.add(db_post)
+    db.commit()
+    return db_post.id
+
+
 @sub2.source("counter2")
-async def counter_generator(obj, info):
-    for i in range(3):
-        await asyncio.sleep(0.3)
-        yield i
+async def counter_generator() -> AsyncGenerator[str, None]:
+    async with broadcast.subscribe(channel="chatroom") as subscriber:
+        async for message in subscriber:
+            yield message
 
 
 @sub2.field("counter2")
 def counter_resolver(count, info):
-    return f'{count } value test'
+    return count
+
+
+# @event.listens_for(models.Post, 'after_insert')
+# def do_stuff(mapper, connection, target, *args, **kwargs):
+#     ic('do_stuffdo_stuffdo_stuffdo_stuff')
+#     # ic(mapper, connection, target, args, kwargs)
+
+
+types = [sub2, send_mutation]
+# AddTypeDef(counter2_type_def)
+# AddType([sub2, send_mutation])

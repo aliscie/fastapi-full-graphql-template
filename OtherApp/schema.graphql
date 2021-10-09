@@ -1,0 +1,10 @@
+extend type Subscription {
+"""
+- This returns 0 value test, 1 value test, 3 value test
+"""
+counter2: String!
+}
+
+extend type Mutation {
+    send(number: String!): String!
+}

@@ -1,35 +1,31 @@
 import asyncio
 
-from ariadne import SubscriptionType, QueryType, ObjectType
+from ariadne import SubscriptionType, QueryType
+from icecream import ic
 
-from core.TypeDef import AddTypeDef
 
 query = QueryType()
-query.bind_resolvers_to_graphql_type('hello', "String!")
 subscription = SubscriptionType()
 
-query = ObjectType("Query")
+# class AuthenticationError(Exception):
+#     extensions = {"code": "UNAUTHENTICATED"}
+#
+#
+# type_def = """
+#     type Query {
+#         field: Boolean
+#     }
+# """
+#
+# query_type = QueryType()
+
 
 @query.field("hello")
 def resolve_hello(*args, **kwargs):
+    # raise AuthenticationError("PLEASE LOGIN")
+    ic('resolve_helloresolve_helloresolve_helloresolve_helloresolve_hello')
     return 'xxxxxxx'
 
-hello_type_def = '''
-extend type Query{
-hello: String!}
-
-'''
-subscription_type_def = '''
-
-extend type Subscription {
-"""
-- This returns `1, 2, 3, 4,`
-"""
-counter: Int!
-}
-'''
-
-AddTypeDef([subscription_type_def,hello_type_def])
 
 @subscription.source("counter")
 async def counter_generator(obj, info):
@@ -41,3 +37,6 @@ async def counter_generator(obj, info):
 @subscription.field("counter")
 def counter_resolver(count, info):
     return count
+
+
+types = [query, subscription]

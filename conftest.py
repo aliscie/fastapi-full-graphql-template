@@ -1,3 +1,5 @@
+
+
 import pytest
 from graphql import graphql_sync
 # from starlette.testclient import TestClient
@@ -9,7 +11,6 @@ from core.main import schema
 # def client():
 #     app = GraphQL(schema)
 #     return TestClient(app)
-
 
 def parsequery(x):
     return graphql_sync(schema, x)
