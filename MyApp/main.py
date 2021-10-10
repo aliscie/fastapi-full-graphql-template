@@ -1,8 +1,6 @@
 import asyncio
-
 from ariadne import SubscriptionType, QueryType
 from icecream import ic
-
 
 query = QueryType()
 subscription = SubscriptionType()

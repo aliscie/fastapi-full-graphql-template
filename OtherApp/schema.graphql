@@ -2,9 +2,13 @@ extend type Subscription {
 """
 - This returns 0 value test, 1 value test, 3 value test
 """
-counter2: String!
+chat: Message
 }
 
 extend type Mutation {
     send(number: String!): String!
 }
+type Message {
+    sender: String
+    message: String
+  }
