@@ -1,55 +1,63 @@
+import asyncio
 from collections import AsyncGenerator
+from typing import Any
 
 from ariadne import SubscriptionType, MutationType
 from broadcaster import Broadcast
 
-from core import models
 # from core.main import app
+from graphql import GraphQLResolveInfo
+from icecream import ic
+
+from core.main import app
 from db_conf import db_session
 
 db = db_session.session_factory()
 
 sub2 = SubscriptionType()
-
 send_mutation = MutationType()
-subscription = SubscriptionType()
-
-broadcast = Broadcast("redis://localhost:6379")
+broadcast = Broadcast("redis://redis:6379")
 
 
-#
+@app.on_event("startup")
+async def startup_event():
+    ic('start')
+    await broadcast.connect()
+    ic('pass')
 
-# @app.on_event("startup")
-# async def startup_event():
-#     x = broadcast.connect
-#
-#
-# @app.on_event("shutdown")
-# async def startup_event():
-#     x = broadcast.disconnect
+
+@app.on_event("shutdown")
+async def startup_event():
+    ic('shutdown')
+    await broadcast.disconnect()
 
 
 @send_mutation.field("send")
-def resolve_send(*args, **kwargs):
-    # broadcast.publish(channel="chatroom", message="Hello world!")
+async def resolve_send(*args, **kwargs):
+    number = kwargs.get('number')
+    await broadcast.publish(channel="chatroom", message=number)
 
     # for i in Post.query.all():
     # sql1 = delete(Post).where(Post.id == i.id)
     # db.execute(sql1)
     # db.commit()
 
-    number = kwargs.get('number')
-    db_post = models.Post(title=number)
-    db.add(db_post)
-    db.commit()
-    return db_post.id
+
+    # db_post = models.Post(title=number)
+    # db.add(db_post)
+    # db.commit()
+    return number
 
 
 @sub2.source("counter2")
-async def counter_generator() -> AsyncGenerator[str, None]:
+async def counter_generator(_: Any, info: GraphQLResolveInfo) -> AsyncGenerator[str, None]:
     async with broadcast.subscribe(channel="chatroom") as subscriber:
-        async for message in subscriber:
-            yield message
+        async for event in subscriber:
+            yield event
+
+
+
+    #     yield str(subscriber)
 
 
 @sub2.field("counter2")

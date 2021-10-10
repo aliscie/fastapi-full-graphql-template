@@ -24,7 +24,7 @@ subscription = SubscriptionType()
 def resolve_hello(*args, **kwargs):
     # raise AuthenticationError("PLEASE LOGIN")
     ic('resolve_helloresolve_helloresolve_helloresolve_helloresolve_hello')
-    return 'xxxxxxx'
+    return "xxxxxxx"
 
 
 @subscription.source("counter")

@@ -1,8 +1,8 @@
 import importlib
-
 from ariadne import make_executable_schema, load_schema_from_path
 from ariadne.asgi import GraphQL
 from fastapi import FastAPI
+from icecream import ic
 
 from core.settings import APPS
 
@@ -17,7 +17,7 @@ for i in APPS:
     except:
         pass
     types.extend(x.types)
-#
+
 schema = make_executable_schema(type_defs, *types)
 ariadneApp = GraphQL(schema, debug=True)
 app.mount("/", ariadneApp)
