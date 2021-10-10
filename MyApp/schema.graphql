@@ -1,0 +1,11 @@
+extend type Query{
+hello: String!
+}
+
+
+extend type Subscription {
+"""
+- This returns `1, 2, 3, 4,`
+"""
+counter: Int!
+}

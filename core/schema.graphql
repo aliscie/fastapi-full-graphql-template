@@ -1,0 +1,17 @@
+schema {
+query: Query
+subscription: Subscription
+mutation: Mutation
+}
+
+type Query {
+_unused: Boolean
+}
+
+type Mutation {
+_unused: Boolean
+}
+
+type Subscription {
+_unused: Boolean
+}
