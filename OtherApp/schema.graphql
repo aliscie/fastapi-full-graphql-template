@@ -1,22 +1,14 @@
 extend type Subscription {
 """
-- This returns 0 value test, 1 value test, 3 value test
+- chat app live time data
 """
-<<<<<<< HEAD
 chat: Message
-=======
-counter2: String!
->>>>>>> origin/master
 }
 
 extend type Mutation {
     send(number: String!): String!
-<<<<<<< HEAD
 }
 type Message {
     sender: String
     message: String
   }
-=======
-}
->>>>>>> origin/master
