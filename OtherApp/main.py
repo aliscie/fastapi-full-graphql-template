@@ -38,9 +38,6 @@ async def counter_generator(_: Any, info: GraphQLResolveInfo) -> AsyncGenerator[
         async for event in subscriber:
             yield json.loads(event.message)
 
-    #     yield str(subscriber)
-
-
 @sub2.field("chat")
 def counter_resolver(count, info):
     return count
@@ -53,5 +50,3 @@ def counter_resolver(count, info):
 
 
 types = [sub2, send_mutation]
-# AddTypeDef(chat_type_def)
-# AddType([sub2, send_mutation])

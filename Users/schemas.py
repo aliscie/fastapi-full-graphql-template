@@ -1,7 +1,7 @@
 from graphene_sqlalchemy import SQLAlchemyObjectType
 from pydantic import BaseModel
 
-from core.models import Post
+from Users.models import Post
 
 
 class PostSchema(BaseModel):

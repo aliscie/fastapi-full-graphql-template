@@ -5,6 +5,7 @@ from icecream import ic
 query = QueryType()
 subscription = SubscriptionType()
 
+
 # class AuthenticationError(Exception):
 #     extensions = {"code": "UNAUTHENTICATED"}
 #

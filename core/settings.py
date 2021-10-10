@@ -7,6 +7,7 @@ sys.path.insert(0, PROJECT_DIR)
 
 
 APPS = [
+    'Users',
     'MyApp',
     'OtherApp',
 ]
