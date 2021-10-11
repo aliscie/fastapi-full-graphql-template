@@ -1,6 +1,5 @@
 import json
-from collections import AsyncGenerator
-from typing import Any
+from typing import Any, AsyncGenerator
 
 from ariadne import SubscriptionType, MutationType
 from graphql import GraphQLResolveInfo

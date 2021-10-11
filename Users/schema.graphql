@@ -2,3 +2,13 @@ extend type Mutation {
     signup(username: String!, password: String!): Boolean
     signin(username: String!, password: String!): Boolean
 }
+
+extend type Query{
+    users(from:Int, to: Int ): [User]
+
+}
+
+type User{
+    id: ID
+    username: String!
+}

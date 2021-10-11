@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7226b38e70068d83fd423a764f6b33017e91219fc1a750588d1c8c0a53f44aa3"
+            "sha256": "08b99e7d5336cc9abde4e90e8950e523697d3c6ad238357719b584020fb062de"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -187,11 +187,11 @@
         },
         "click": {
             "hashes": [
-                "sha256:3fab8aeb8f15f5452ae7511ad448977b3417325bceddd53df87e0bb81f3a8cf8",
-                "sha256:7027bc7bbafaab8b2c2816861d8eb372429ee3c02e193fc2f93d6c4ab9de49c5"
+                "sha256:353f466495adaeb40b6b5f592f9f91cb22372351c84caeb068132442a4518ef3",
+                "sha256:410e932b050f5eed773c4cda94de75971c89cdb3155a72a0831139a79e5ecb5b"
             ],
             "index": "pypi",
-            "version": "==8.0.2"
+            "version": "==8.0.3"
         },
         "colorama": {
             "hashes": [
@@ -270,7 +270,7 @@
                 "sha256:c78d09596d347e1cffd266c5384abfedf43ed1eae08729773bebb3d527fe5a14",
                 "sha256:e65975b6a13878f9113a1fa5320760585b522d139944e005936b1b8358d0651a"
             ],
-            "markers": "python_version >= '3.6' and python_version < '4'",
+            "index": "pypi",
             "version": "==3.1.6"
         },
         "graphql-relay": {

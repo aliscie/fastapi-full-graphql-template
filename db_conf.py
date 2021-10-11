@@ -15,4 +15,4 @@ engine = create_engine(
 
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 Base = declarative_base()
-Base.query = db_session.query_property()
+Base.users_query = db_session.query_property()

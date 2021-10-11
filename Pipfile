@@ -60,6 +60,7 @@ requests = "*"
 broadcaster = "*"
 asyncio-redis = "*"
 redis = "*"
+graphql-core = "==3.1.6"
 
 [dev-packages]
 

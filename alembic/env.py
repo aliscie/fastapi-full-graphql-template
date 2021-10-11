@@ -6,6 +6,8 @@ from sqlalchemy import engine_from_config, pool
 
 from alembic import context
 
+from Users import models
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
@@ -15,7 +17,6 @@ config.set_main_option("sqlalchemy.url", os.environ["DATABASE_URL"])
 
 fileConfig(config.config_file_name)
 
-from Users import models
 
 target_metadata = models.Base.metadata
 

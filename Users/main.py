@@ -1,50 +1,28 @@
-import bcrypt
-from ariadne import MutationType
+import asyncio
+
+from ariadne import QueryType
+from icecream import ic
 
 from Users import models
-from Users.schemas import UserSchema
+from Users.auth import mutation
 from db_conf import db_session
 
-mutation = MutationType()
 db = db_session.session_factory()
 
-
-class AuthenticationError(Exception):
-    extensions = {"code": "UNAUTHENTICATED"}
+users_query = QueryType()
 
 
-@mutation.field("signup")
-def resolve_signup(*args, **kwargs):
-    username = kwargs.get('username')
-    password = kwargs.get('password')
-    hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
-    password_hash = hashed_password.decode("utf8")
-
-    user = UserSchema(username=username, password=password_hash)
-    db_user = models.User(username=user.username, password=password_hash)
-    db.add(db_user)
-
-    try:
-        db.commit()
-        db.refresh(db_user)
-        ok = True
-
-    except:
-        db.rollback()
-        ok = False
-    return ok
+def send_auth_email(user):
+    asyncio.sleep(1)
+    print(f'verification email is sent to {user}')
 
 
-@mutation.field("signin")
-def resolve_signin(*args, **kwargs):
-    username = kwargs.get('username')
-    password = kwargs.get('password')
-    user = UserSchema(username=username, password=password)
-    db_user_info = db.query(models.User).filter(models.User.username == username).first()
-    if bcrypt.checkpw(user.password.encode("utf-8"), db_user_info.password.encode("utf-8")):
-        return True
-    else:
-        return AuthenticationError("dummy auth error")
+@users_query.field("users")
+def resolve_users(*args, **kwargs):
+    # record_query = db.query.paginate(1, 2, False)
+    # total = record_query.total
+    # record_items = record_query.items
+    return {"items": db.query(models.User).all()}
 
 
-types = [mutation]
+types = [mutation, users_query]
