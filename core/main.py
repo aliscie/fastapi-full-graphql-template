@@ -1,10 +1,9 @@
 import importlib
+
 from ariadne import make_executable_schema, load_schema_from_path
 from ariadne.asgi import GraphQL
-from ariadne.validation import cost_validator
 from broadcaster import Broadcast
 from fastapi import FastAPI
-from icecream import ic
 
 from core.settings import APPS
 

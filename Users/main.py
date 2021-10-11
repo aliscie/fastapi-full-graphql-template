@@ -1,7 +1,6 @@
 import asyncio
 
 from ariadne import QueryType
-from icecream import ic
 
 from Users import models
 from Users.auth import mutation
@@ -22,7 +21,7 @@ def resolve_users(*args, **kwargs):
     # record_query = db.query.paginate(1, 2, False)
     # total = record_query.total
     # record_items = record_query.items
-    return {"items": db.query(models.User).all()}
+    return db.query(models.User).all()
 
 
 types = [mutation, users_query]

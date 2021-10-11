@@ -55,12 +55,12 @@ psycopg2 = "*"
 black = "==21.6b0"
 sqlparse = "==0.4.1"
 ariadne = "==0.13.0"
-graphene-sqlalchemy = "*"
 requests = "*"
 broadcaster = "*"
 asyncio-redis = "*"
 redis = "*"
 graphql-core = "==3.1.6"
+graphene-sqlalchemy = "*"
 
 [dev-packages]
 

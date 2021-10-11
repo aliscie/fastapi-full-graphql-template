@@ -1,8 +1,8 @@
 import bcrypt
 from ariadne import MutationType
+from icecream import ic
 
 from Users import models
-from Users.schemas import UserSchema
 from db_conf import db_session
 
 db = db_session.session_factory()
@@ -18,9 +18,9 @@ class AuthenticationError(Exception):
 def resolve_signin(*args, **kwargs):
     username = kwargs.get('username')
     password = kwargs.get('password')
-    user = UserSchema(username=username, password=password)
+    # user = UserSchema(username=username, password=password)
     db_user_info = db.users_query(models.User).filter(models.User.username == username).first()
-    if bcrypt.checkpw(user.password.encode("utf-8"), db_user_info.password.encode("utf-8")):
+    if bcrypt.checkpw(password.encode("utf-8"), db_user_info.password.encode("utf-8")):
         return True
     else:
         return AuthenticationError("dummy auth error")
@@ -28,20 +28,24 @@ def resolve_signin(*args, **kwargs):
 
 @mutation.field("signup")
 def resolve_signup(*args, **kwargs):
-    username = kwargs.get('username')
     password = kwargs.get('password')
     hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
-    password_hash = hashed_password.decode("utf8")
 
-    user = UserSchema(username=username, password=password_hash)
-    db_user = models.User(username=user.username, password=password_hash)
+    data = {}
+    for i in models.User.__table__.columns.keys():
+        if i != 'id':
+            data[i] = kwargs.get(i)
+    data['password'] = hashed_password.decode("utf8")
+
+    db_user = models.User(**data)
     db.add(db_user)
 
     try:
         db.commit()
         db.refresh(db_user)
         ok = True
-    except:
+    except Exception as e:
+        ic(e)
         db.rollback()
         ok = False
     return ok

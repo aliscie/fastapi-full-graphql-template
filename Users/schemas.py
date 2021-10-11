@@ -1,5 +1,6 @@
 # from graphene_sqlalchemy import SQLAlchemyObjectType
-from pydantic import BaseModel
+# from graphene_sqlalchemy import SQLAlchemyObjectType
+# from pydantic import BaseModel
 
 # from Users.models import Post
 #
@@ -14,6 +15,7 @@ from pydantic import BaseModel
 #         model = Post
 
 
-class UserSchema(BaseModel):
-    username: str
-    password: str
+# class UserSchema(SQLAlchemyObjectType):
+#     class Meta:
+#         model = User
+

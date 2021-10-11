@@ -8,6 +8,15 @@ from alembic import context
 
 from Users import models
 
+#TODO dynamic import apps
+# import importlib
+# from core.settings import APPS
+# for i in APPS:
+#     x = importlib.import_module(f'{i}.main')
+#     target_metadata = x.models.Base.metadata
+
+target_metadata = models.Base.metadata
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
@@ -16,9 +25,6 @@ config = context.config
 config.set_main_option("sqlalchemy.url", os.environ["DATABASE_URL"])
 
 fileConfig(config.config_file_name)
-
-
-target_metadata = models.Base.metadata
 
 
 def run_migrations_offline():
