@@ -8,6 +8,18 @@ def test_query(querying):
     printJ(result.data)
 
 
+def test_posts_filtering(querying):
+    result = querying("""
+    query{
+    posts(input:{search:"title"}){
+    title
+    content
+    }
+    }
+    """)
+    printJ(result.data)
+
+
 def test_subscription(client, get_messages):
     with client.websocket_connect("/", "graphql-ws") as ws:
         ws.send_json(

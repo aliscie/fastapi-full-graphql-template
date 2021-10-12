@@ -6,7 +6,7 @@ from Users import models
 from Users.auth import mutation
 from db_conf import db_session
 
-db = db_session.session_factory()
+
 
 users_query = QueryType()
 
@@ -17,10 +17,7 @@ def send_auth_email(user):
 
 
 @users_query.field("users")
-def resolve_users(*args, **kwargs):
-    # record_query = db.query.paginate(1, 2, False)
-    # total = record_query.total
-    # record_items = record_query.items
+def __init__(*args, **kwargs):
     return db.query(models.User).all()
 
 

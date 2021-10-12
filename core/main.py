@@ -4,8 +4,11 @@ from ariadne import make_executable_schema, load_schema_from_path
 from ariadne.asgi import GraphQL
 from broadcaster import Broadcast
 from fastapi import FastAPI
+from icecream import ic
 
+from Functions.Filtering import filtering
 from core.settings import APPS
+from posts.models import Post
 
 app = FastAPI()
 
@@ -50,6 +53,19 @@ def pagination(resolver, obj, info, **args):
             return value[:f]
         return value[i:f]
     return value
+
+
+# def serach(resolver, obj, info, **args):
+#     value = resolver(obj, info, **args)
+#     #TODO
+#     # if obj and args:
+#     #     return filtering(obj,args)
+#     # try:
+#     #     ic(value.filter(Post.title == 'title lkdsjf'))
+#     #     ic('passs')
+#     # except:
+#     #     pass
+#     return value
 
 
 schema = make_executable_schema(type_defs, *types)

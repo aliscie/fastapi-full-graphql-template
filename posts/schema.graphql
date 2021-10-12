@@ -7,8 +7,18 @@ chat: Message
 
 extend type Mutation {
     send(number: String!): String!
+    post(title: String!, content: String!): Boolean!
 }
 type Message {
     sender: String
     message: String
   }
+
+
+extend type Query{
+    """
+    filter_operator options are `and, or, not`
+    """
+
+    posts(input: ListInput): [Post]
+}

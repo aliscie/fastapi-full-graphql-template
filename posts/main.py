@@ -1,22 +1,25 @@
 import json
 from typing import Any, AsyncGenerator
 
-from ariadne import SubscriptionType, MutationType
+from ariadne import MutationType
+from ariadne import SubscriptionType, QueryType
 from graphql import GraphQLResolveInfo
 
+from Functions.CRUD import Create
+from Functions.Filtering import filtering
 from core.main import broadcast
 from db_conf import db_session
+from posts.models import Post
 
 db = db_session.session_factory()
 
 sub2 = SubscriptionType()
-send_mutation = MutationType()
+mutation = MutationType()
+query = QueryType()
 
 
-
-
-@send_mutation.field("send")
-async def resolve_send(*args, **kwargs):
+@mutation.field("send")
+async def __init__(*args, **kwargs):
     number = kwargs.get('number')
     await broadcast.publish(channel="chatroom", message=json.dumps({'message': number, "sender": 1}))
 
@@ -37,10 +40,20 @@ async def counter_generator(_: Any, info: GraphQLResolveInfo) -> AsyncGenerator[
         async for event in subscriber:
             yield json.loads(event.message)
 
+
 @sub2.field("chat")
 def counter_resolver(count, info):
     return count
 
+
+@mutation.field('post')
+def __init__(*args, **kwargs):
+    return Create(db,Post,kwargs)
+
+
+@query.field('posts')
+def resolve_posts(*args, **kwargs):
+    return filtering(Post, kwargs)
 
 # @event.listens_for(models.Post, 'after_insert')
 # def do_stuff(mapper, connection, target, *args, **kwargs):
@@ -48,4 +61,4 @@ def counter_resolver(count, info):
 #     # ic(mapper, connection, target, args, kwargs)
 
 
-types = [sub2, send_mutation]
+types = [sub2, mutation, query]

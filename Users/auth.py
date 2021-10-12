@@ -15,19 +15,18 @@ class AuthenticationError(Exception):
 
 
 @mutation.field("signin")
-def resolve_signin(*args, **kwargs):
+def __init__(*args, **kwargs):
     username = kwargs.get('username')
     password = kwargs.get('password')
-    # user = UserSchema(username=username, password=password)
     db_user_info = db.users_query(models.User).filter(models.User.username == username).first()
     if bcrypt.checkpw(password.encode("utf-8"), db_user_info.password.encode("utf-8")):
         return True
     else:
-        return AuthenticationError("dummy auth error")
+        return AuthenticationError("invalid credentials.")
 
 
 @mutation.field("signup")
-def resolve_signup(*args, **kwargs):
+def __init__(*args, **kwargs):
     password = kwargs.get('password')
     hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 

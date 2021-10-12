@@ -4,5 +4,5 @@ extend type Mutation {
 }
 
 extend type Query{
-    users(from:Int, to: Int ): [User]
+    users(input: ListInput): [User]
 }

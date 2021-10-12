@@ -20,7 +20,7 @@ subscription = SubscriptionType()
 
 
 @query.field("hello")
-def resolve_hello(*args, **kwargs):
+def __init__(*args, **kwargs):
     # raise AuthenticationError("PLEASE LOGIN")
     ic('resolve_helloresolve_helloresolve_helloresolve_helloresolve_hello')
     return "xxxxxxx"
