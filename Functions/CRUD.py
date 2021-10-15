@@ -1,4 +1,9 @@
-def Create(db, Model, original_Data):
+from db_conf import db_session
+
+db = db_session.session_factory()
+
+
+def Create(Model, original_Data):
     data = {}
     for i in Model.__table__.columns.keys():
         if i != 'id':

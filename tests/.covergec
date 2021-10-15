@@ -1,0 +1,8 @@
+[path]
+source =
+    ../MyApp
+[run]
+source =
+    core
+    MyApp
+    tests

@@ -1,6 +1,3 @@
-from icecream import ic
-
-
 def make_schemas(model):
     d = """
         """

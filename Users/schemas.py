@@ -1,21 +1,13 @@
-# from graphene_sqlalchemy import SQLAlchemyObjectType
-# from graphene_sqlalchemy import SQLAlchemyObjectType
-# from pydantic import BaseModel
-
-# from Users.models import Post
-#
-#
-# class PostSchema(BaseModel):
-#     title: str
-#     content: str
-#
-#
-# class PostModel(SQLAlchemyObjectType):
-#     class Meta:
-#         model = Post
+from graphene_sqlalchemy import SQLAlchemyObjectType
+from Users.models import User
 
 
-# class UserSchema(SQLAlchemyObjectType):
-#     class Meta:
-#         model = User
+class UserSchema(SQLAlchemyObjectType):
+    class Meta:
+        model = User
+
+
+class PostSchema(SQLAlchemyObjectType):
+    class Meta:
+        model = Post
 

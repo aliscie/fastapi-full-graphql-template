@@ -4,6 +4,7 @@ from typing import Any, AsyncGenerator
 from ariadne import MutationType
 from ariadne import SubscriptionType, QueryType
 from graphql import GraphQLResolveInfo
+from icecream import ic
 
 from Functions.CRUD import Create
 from Functions.Filtering import filtering
@@ -48,11 +49,12 @@ def counter_resolver(count, info):
 
 @mutation.field('post')
 def __init__(*args, **kwargs):
-    return Create(db,Post,kwargs)
+    return Create(Post,kwargs)
 
 
 @query.field('posts')
 def resolve_posts(*args, **kwargs):
+    ic(db.query(Post).all())
     return filtering(Post, kwargs)
 
 # @event.listens_for(models.Post, 'after_insert')

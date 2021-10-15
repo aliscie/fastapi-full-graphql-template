@@ -6,13 +6,14 @@ from broadcaster import Broadcast
 from fastapi import FastAPI
 from icecream import ic
 
-from Functions.Filtering import filtering
+from Users.models import User
 from core.settings import APPS
-from posts.models import Post
 
 app = FastAPI()
 
 broadcast = Broadcast("redis://redis:6379")
+
+# broadcast = Broadcast("redis://localhost:6379")
 
 
 @app.on_event("startup")
@@ -26,7 +27,7 @@ async def startup_event():
 
 
 types = []
-type_defs = [load_schema_from_path(f'../../')]
+type_defs = [load_schema_from_path('../../')]
 
 for i in APPS:
     x = importlib.import_module(f'{i}.main')
@@ -67,6 +68,10 @@ def pagination(resolver, obj, info, **args):
 #     #     pass
 #     return value
 
+ic('xxx')
+# schema_dict = UserSchema.introspect()
+# my_types = schema_dict["__schema"]["types"]
+# list(filter(lambda my_types: types['name'] == 'PostSchema', my_types))
 
 schema = make_executable_schema(type_defs, *types)
 ariadneApp = GraphQL(schema, debug=True, middleware=[pagination])

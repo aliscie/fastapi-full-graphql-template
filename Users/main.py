@@ -5,7 +5,7 @@ from ariadne import QueryType
 from Users import models
 from Users.auth import mutation
 from db_conf import db_session
-
+db = db_session.session_factory()
 
 
 users_query = QueryType()

@@ -1,11 +1,18 @@
 
-
 import pytest
 from ariadne.asgi import GraphQL
 from graphql import graphql_sync
 from starlette.testclient import TestClient
 
 from core.main import schema
+from db_conf import engine, Base, db_session
+
+
+@pytest.fixture()
+def test_db():
+    Base.metadata.create_all(bind=engine)
+    yield
+    Base.metadata.drop_all(bind=engine)
 
 
 @pytest.fixture
