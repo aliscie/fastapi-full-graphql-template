@@ -14,7 +14,6 @@ def filtering(Model, data):
     if data:
         search = data.get('search')
         filter_operator = data.get('filter_operator')
-
         filter_operator = filter_operator if filter_operator else 'and'
         filter_operator = filter_operator.lower()
         filter_operator = filter_operator + '_'

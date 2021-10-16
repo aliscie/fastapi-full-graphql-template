@@ -4,7 +4,6 @@ from typing import Any, AsyncGenerator
 from ariadne import MutationType
 from ariadne import SubscriptionType, QueryType
 from graphql import GraphQLResolveInfo
-from icecream import ic
 
 from Functions.CRUD import Create
 from Functions.Filtering import filtering
@@ -54,8 +53,7 @@ def __init__(*args, **kwargs):
 
 @query.field('posts')
 def resolve_posts(*args, **kwargs):
-    ic(db.query(Post).all())
-    return filtering(Post, kwargs)
+    return db.query(Post).all()
 
 # @event.listens_for(models.Post, 'after_insert')
 # def do_stuff(mapper, connection, target, *args, **kwargs):

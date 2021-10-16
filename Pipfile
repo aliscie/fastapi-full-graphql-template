@@ -62,6 +62,7 @@ redis = "*"
 graphql-core = "==3.1.6"
 graphene-sqlalchemy = "*"
 schema = "*"
+werkzeug = "*"
 
 [dev-packages]
 

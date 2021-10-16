@@ -1,49 +1,127 @@
 from ariadne.asgi import GQL_START
+from ariadne.wsgi import GraphQL
 from icecream import ic
+from starlette.testclient import TestClient
 
+from Functions.ListFilter import list_filter
 from Functions.printJson import printJ
+from core.main import app, schema
+from werkzeug.test import Client
+
+from db_conf import db_session
+from posts.models import Post
 
 
-def test_query(querying):
-    result = querying("{ hello }")
-    printJ(result.data)
+def test_sql_querying(test_db, querying):
+    def mainQ(x):
+        return f"""
+        query{{
+        posts{x}{{
+        id
+        title
+        }}
+        }}
+        """
+    for i in range(3):
+        res = querying("""
+                mutation{
+                post(title:"title",content:"onee")
+                }
+                """)
+    res = querying("""
+        mutation{
+        post(title:"xx",content:"onee")
+        }
+        """)
+    res = querying(mainQ("""(input:{search:"xx"})"""))
+    assert res.data['posts'][0]['title'] == 'xx'
+    res = querying(mainQ("""(input:{search:"title"})"""))
+    assert res.data['posts'][0]['title'] == 'title'
+    res = querying(mainQ("""(input:{filter:"{'title':'xx'}"})"""))
+    assert res.data['posts'][0]['title'] == 'xx'
+
+def test_pagination(test_db, querying):
+    for i in range(10):
+        res = querying("""
+                            mutation{
+                            post(title:"title",content:"onee")
+                            }
+                            """)
+    res = querying("""
+           query{
+           posts{
+           id
+           title
+           }
+           }
+           """)
+    assert len(res.data['posts']) == 10
+    assert res.data['posts'][-1]['id'] == 10
+    # assert len(res.data)
+    res = querying("""
+        query{
+        posts(input:{to:2}){
+        id
+        title
+        }
+        }
+        """)
+    assert len(res.data['posts']) == 2
+    assert res.data['posts'][-1]['id'] == 2
 
 
-def test_selfs(self):
-    ic(self.querying)
+def test_subscription(client, get_messages):
+    subscription = """
+            subscription { counter }
+            """
 
-def test_posts_filtering(self):
-    from db_conf import db_session
-    db = db_session.session_factory()
-
-    db_user = models.User(username='mm', password='password')
-    db.add(db_user)
-    try:
-        db.commit()
-        db.refresh(db_user)
-        ok = True
-    except Exception as e:
-        ic(e)
-        db.rollback()
-        ok = False
-    ic(db.query(models.User).all())
-    result = self.querying("""
-            mutation {
-            post(title: "String", content: "String")
+    with client.websocket_connect("/", "graphql-ws") as ws:
+        ws.send_json(
+            {
+                "type": GQL_START,
+                "payload": {"query": subscription},
             }
-            """)
-    ic(db.query(models.User).all())
-    printJ(result.data)
+        )
+        x = get_messages(ws.receive_json, 22)
+        printJ(x)
 
-    result = self.querying("""
+
+def test_posts_filtering(test_db, querying):
+    res = querying("""
+                    mutation{
+                    post(title:"title",content:"onee")
+                    }
+                    """)
+    res = querying("""
+                    mutation{
+                    post(title:"1",content:"onee")
+                    }
+                    """)
+
+    assert res.data['post'] == True
+
+    res = querying("""
     query{
-    posts(input:{search:"title"}){
+    posts{
     title
     content
     }
     }
     """)
-    printJ(result.data)
+    printJ(res.data)
+    assert len(res.data['posts']) == 2
+    assert res.data['posts'][0]['title'] == 'title'
+
+    res = querying("""
+        query{
+        posts(input:{search:"1"}){
+        title
+        content
+        }
+        }
+        """)
+    assert len(res.data['posts']) == 1
+    assert res.data['posts'][0]['title'] == '1'
 
 
 def test_subscription(test_db, client, get_messages):
