@@ -6,7 +6,6 @@ from ariadne import SubscriptionType, QueryType
 from graphql import GraphQLResolveInfo
 
 from Functions.CRUD import Create
-from Functions.Filtering import filtering
 from core.main import broadcast
 from db_conf import db_session
 from posts.models import Post

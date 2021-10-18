@@ -1,18 +1,29 @@
 import importlib
-
 from ariadne import make_executable_schema, load_schema_from_path
 from ariadne.asgi import GraphQL
 from broadcaster import Broadcast
-from fastapi import FastAPI
-
 from core.MiddleWare.Pagination import pagination
 from core.MiddleWare.SearchAndFiltering import serach
 from core.settings import APPS
+from db_conf import engine
+from fastapi_admin.app import app as admin_app
+from fastapi import FastAPI
+import contextlib
+from sqlalchemy import MetaData
 
 app = FastAPI()
-
 broadcast = Broadcast("redis://redis:6379")
 # broadcast = Broadcast("redis://localhost:6379")
+
+
+
+meta = MetaData()
+
+with contextlib.closing(engine.connect()) as con:
+    trans = con.begin()
+    for table in reversed(meta.sorted_tables):
+        con.execute(table.delete())
+    trans.commit()
 
 
 @app.on_event("startup")
@@ -41,3 +52,4 @@ middleware = [pagination, serach]
 schema = make_executable_schema(type_defs, *types)
 ariadneApp = GraphQL(schema, debug=True, middleware=middleware)
 app.mount("/", ariadneApp)
+app.mount("/admin", admin_app)
