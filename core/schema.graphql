@@ -5,6 +5,16 @@ mutation: Mutation
 }
 
 type Query {
+    """
+    ### filtering options
+    * **Ecample**: `users(input:{filter:"{'id__gt__':2}"})` instead of `__gt__` you can use
+    - `__gt__` describes greater than (>)
+    - `__ge__` describes greater than or equal to (>=)
+    - `__lt__` describes less than operator(<)
+    - `__le__` descries less than or equal to (<=)
+    - `__contains__`
+    - `__ne__` describes not equal to operator(!=)
+    """
 _unused: Boolean
 }
 

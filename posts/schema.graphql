@@ -13,12 +13,3 @@ type Message {
     sender: String
     message: String
   }
-
-
-extend type Query{
-    """
-    filter_operator options are `and, or, not`
-    """
-
-    posts(input: ListInput): [Post]
-}

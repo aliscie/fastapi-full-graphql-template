@@ -1,5 +1,6 @@
 up:
 	#docker-compose build
+	#docker-compose up -d
 	docker-compose up
 
 down:
@@ -18,7 +19,7 @@ migrate:
 	docker-compose run app alembic upgrade head
 	docker-compose run app alembic revision --autogenerate -m "New Migration"
 
-migrations:
+makemigratoins:
 	alembic revision -m 'init'
 
 restart:

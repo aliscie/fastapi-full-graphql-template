@@ -1,4 +1,5 @@
-def make_schemas(model):
+def make_schemas(model,is_list=True):
+    name = model.__tablename__
     d = """
         """
     for i, key in model.__table__.columns.items():
@@ -15,8 +16,14 @@ def make_schemas(model):
                 {i}: {x}
                 """
     y = f"""
-    type {model.__tablename__.title()} {{
+    type {name.title()} {{
     {d}
     }}
     """
+    if is_list:
+        y += f"""
+            extend type Query{{
+            {name.lower()}s(input: ListInput): [{name.title()}]
+            }}
+            """
     return y

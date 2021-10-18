@@ -1,7 +1,9 @@
 import os
 from logging.config import fileConfig
 
+import fastapi
 from dotenv import load_dotenv
+from icecream import ic
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
@@ -14,8 +16,8 @@ from Users import models
 # for i in APPS:
 #     x = importlib.import_module(f'{i}.main')
 #     target_metadata = x.models.Base.metadata
-
-target_metadata = models.Base.metadata
+from celery_sqlalchemy_scheduler.models import ModelBase
+target_metadata = [models.Base.metadata, ModelBase.metadata]
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(BASE_DIR, ".env"))

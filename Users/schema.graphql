@@ -2,7 +2,3 @@ extend type Mutation {
     signup(username: String!, password: String!, birth_date: String, email: String): Boolean
     signin(username: String!, password: String!): String
 }
-
-extend type Query{
-    users(input: ListInput): [User]
-}
