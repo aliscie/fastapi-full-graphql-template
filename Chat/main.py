@@ -77,18 +77,26 @@ def __init__(count, info):
             "every": 1,
             'period': IntervalSchedule.SECONDS
         }
-        schedule = IntervalSchedule(**data)
-        session.add(schedule)
-        schedule = db.query(IntervalSchedule).filter().first()
-        periodic_task = db.query(PeriodicTask).filter().first()
-        periodic_task = PeriodicTask(
-            start_time=now() + datetime.timedelta(seconds=3),
-            expires=now() + datetime.timedelta(days=10),
-            name='My task',  # simply describes this periodic task.
-            task='My_new_task',  # name of task.
-            args=json.dumps([1,1,1]))
-        periodic_task.interval = schedule
-        session.add(periodic_task)
+        # schedule = IntervalSchedule(**data)
+        # session.add(schedule)
+        schedule = session.query(IntervalSchedule).filter(IntervalSchedule.every==1).first()
+        periodic_task = session.query(PeriodicTask).filter(PeriodicTask.id == 10).first()
+
+        # periodic_task = PeriodicTask(
+        #     start_time=now() + datetime.timedelta(seconds=3),
+        #     expires=now() + datetime.timedelta(days=10),
+        #     name='My task',  # simply describes this periodic task.
+        #     task='My_new_task',  # name of task.
+        #     args=json.dumps([1,1,1]))
+        # periodic_task.interval = schedule
+        # periodic_task.start_time = now() + datetime.timedelta(seconds=3)
+        # periodic_task.expires = now() + datetime.timedelta(days=10)
+        # periodic_task.total_run_count = 3
+        periodic_task.task = 'My_new_task'
+        periodic_task.args = json.dumps([1,1,1])
+        periodic_task.one_off = True
+        periodic_task.enabled = False
+        # session.add(periodic_task)
         session.commit()
 
     return count * 100
