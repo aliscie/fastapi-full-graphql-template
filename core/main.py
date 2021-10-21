@@ -4,14 +4,24 @@ from ariadne.asgi import GraphQL
 from broadcaster import Broadcast
 from core.MiddleWare.Pagination import pagination
 from core.MiddleWare.SearchAndFiltering import serach
-from core.settings import APPS
+from core.settings import APPS, origins
 from db_conf import engine
 from fastapi_admin.app import app as admin_app
 from fastapi import FastAPI
 import contextlib
 from sqlalchemy import MetaData
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 broadcast = Broadcast("redis://redis:6379")
 # broadcast = Broadcast("redis://localhost:6379")
 
@@ -50,6 +60,7 @@ for i in APPS:
 
 middleware = [pagination, serach]
 schema = make_executable_schema(type_defs, *types)
+
 ariadneApp = GraphQL(schema, debug=True, middleware=middleware)
 app.mount("/", ariadneApp)
 app.mount("/admin", admin_app)
